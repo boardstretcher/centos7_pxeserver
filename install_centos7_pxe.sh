@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # get server, dhcp info from user
 echo "This server's IP Address: "; read serverip;
 echo "This server's subnet address: "; read subnet;
