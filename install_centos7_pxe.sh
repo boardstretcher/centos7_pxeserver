@@ -10,13 +10,13 @@ echo "DNS server: 4.2.2.3"
 echo "Gateway 192.168.1.1"
 echo "Broadcast: 192.168.1.255"
 echo "======================================================="
-echo "This server's IP Address: "; read serverip;
-echo "This server's subnet address: "; read subnet;
-echo "This server's subnet mask: "; read mask;
-echo "DHCP Range to use: "; read range;
-echo "DNS server: "; read dns;
-echo "Gateway :"; read gateway;
-echo "Broadcast: "; read broadcast;
+echo -n "This server's IP Address: "; read serverip;
+echo -n "This server's subnet address: "; read subnet;
+echo -n "This server's subnet mask: "; read mask;
+echo -n "DHCP Range to use: "; read range;
+echo -n "DNS server: "; read dns;
+echo -n "Gateway :"; read gateway;
+echo -n "Broadcast: "; read broadcast;
 
 # update system and install required packages
 yum -y update
