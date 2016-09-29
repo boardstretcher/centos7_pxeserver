@@ -1,11 +1,11 @@
-# Modify this file BEFORE running it and Remove the 'exit' command to run the file
-# 
-# Search for #MODIFY and 192.168.201 and input the correct IP addresses for your environment
-
-# This will install PXE/Dhcp and will serve up the Centos7 ISO with a kickstart file for
-# autoinstallation
-
-exit
+# get server, dhcp info from user
+echo "This server's IP Address: "; read serverip;
+echo "This server's subnet address: "; read subnet;
+echo "This server's subnet mask: "; read mask;
+echo "DHCP Range to use: "; read range;
+echo "DNS server: "; read dns;
+echo "Gateway :"; read gateway;
+echo "Broadcast: "; read broadcast;
 
 # update system and install required packages
 yum -y update
@@ -28,14 +28,14 @@ ddns-update-style interim;
  allow booting;
  allow bootp;
  allow unknown-clients;
- subnet 192.168.201.0 netmask 255.255.255.0 { #MODIFY
- range 192.168.201.55 192.168.201.59; #MODIFY
- option domain-name-servers 4.2.2.3; #MODIFY
- option routers 192.168.201.100; #MODIFY
- option broadcast-address 192.168.201.255;  #MODIFY
+ subnet $subnet netmask $mask {
+ range $range;
+ option domain-name-servers $dns;
+ option routers $gateway;
+ option broadcast-address $broadcast;
  default-lease-time 600;
  max-lease-time 7200;
- next-server 192.168.201.44; #MODIFY
+ next-server $serverip; #MODIFY
  filename "pxelinux.0";
  }
 EOF
@@ -63,14 +63,14 @@ LABEL local
 LABEL centos7_x64
  MENU LABEL CentOS 7 X64
  KERNEL /centos7/vmlinuz
- APPEND  initrd=/centos7/initrd.img  inst.repo=http://192.168.201.44/centos7  ks=http://192.168.201.44/ks.cfg
+ APPEND  initrd=/centos7/initrd.img  inst.repo=http://$serverip/centos7  ks=http://$serverip/ks.cfg
 EOF
 
 # create kickstart for config
 cat << EOF > /var/www/html/ks.cfg
 firewall --disabled
 install
-url --url="http://192.168.201.44/centos7/"
+url --url="http://$serverip/centos7/"
 # pw = r00tme
 rootpw --iscrypted /hNTxhbZeFodHAO.D9uC.
 auth  useshadow  passalgo=sha512
