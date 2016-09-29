@@ -91,8 +91,6 @@ logvol / --fstype xfs --name=lv01 --vgname=rootvg01 --size=1 --grow
 
 %packages
  @core
- wget
- net-tools
  %end
  %post
  %end
