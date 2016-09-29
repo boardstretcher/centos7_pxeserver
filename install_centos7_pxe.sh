@@ -91,7 +91,7 @@ url --url="http://$serverip/centos7/"
 # pw = r00tme
 rootpw --iscrypted /hNTxhbZeFodHAO.D9uC.
 auth  useshadow  passalgo=sha512
-graphical
+text
 firstboot disable
 keyboard us
 lang en_US
