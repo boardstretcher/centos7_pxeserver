@@ -117,6 +117,8 @@ EOF
 cd /mnt
 mkdir /var/www/html/centos7
 rsync -varh --progress . /var/www/html/centos7/
+cp /mnt/images/pxeboot/vmlinuz /var/lib/tftpboot/centos7/
+cp /mnt/images/pxeboot/initrd.img /var/lib/tftpboot/centos7/
 
 # enable and restart all services - look for errors
 systemctl enable xinetd; systemctl restart xinetd
