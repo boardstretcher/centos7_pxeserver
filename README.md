@@ -1,4 +1,4 @@
-# centos7_pxeserver
-PXE server in centos 7
+# PXE Server in Centos 7
 
-A couple of different examples of how to install PXE/dhcp in a centos 7 environment
+install_PXE_centos7.sh : A script to install a PXE booting environment in Centos 7
+add_xenserver_to_PXE.sh: A script to add XenServer 7.0 to the Centos 7 PXE environment
