@@ -53,6 +53,12 @@ cp -v /usr/share/syslinux/memdisk /var/lib/tftpboot/
 cp -v /usr/share/syslinux/mboot.c32 /var/lib/tftpboot/
 cp -v /usr/share/syslinux/chain.c32 /var/lib/tftpboot/
 
+# get centos iso and mount
+cd /root
+curl -C - -O http://mirror.vtti.vt.edu/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso
+mount -o loop /root/XenServer-7.0.0-main.iso /mnt
+cd /mnt
+
 # create tftp boot menu
 mkdir /var/lib/tftpboot/pxelinux.cfg
 cat << EOF > /var/lib/tftpboot/pxelinux.cfg/default
