@@ -1,6 +1,15 @@
 #!/bin/bash
 
 # get server, dhcp info from user
+echo "================= Example answers ====================="
+echo "This server's IP Address: 192.168.1.42"
+echo "This server's subnet address: 192.168.1.0"
+echo "This server's subnet mask: 255.255.255.0"
+echo "DHCP Range to use: 192.168.1.100 192.168.1.150"
+echo "DNS server: 4.2.2.3"
+echo "Gateway 192.168.1.1"
+echo "Broadcast: 192.168.1.255"
+echo "======================================================="
 echo "This server's IP Address: "; read serverip;
 echo "This server's subnet address: "; read subnet;
 echo "This server's subnet mask: "; read mask;
