@@ -11,7 +11,7 @@ echo "Broadcast: "; read broadcast;
 
 # update system and install required packages
 yum -y update
-yum -y install httpd xinetd syslinux tftp tftp-server dhcp vim
+yum -y install httpd xinetd syslinux tftp tftp-server dhcp vim rsync
 
 # disable firewall
 systemctl disable firewalld; systemctl stop firewalld
@@ -37,7 +37,7 @@ ddns-update-style interim;
  option broadcast-address $broadcast;
  default-lease-time 600;
  max-lease-time 7200;
- next-server $serverip; #MODIFY
+ next-server $serverip;
  filename "pxelinux.0";
  }
 EOF
@@ -56,7 +56,7 @@ cp -v /usr/share/syslinux/chain.c32 /var/lib/tftpboot/
 # get centos iso and mount
 cd /root
 curl -C - -O http://mirror.vtti.vt.edu/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso
-mount -o loop /root/XenServer-7.0.0-main.iso /mnt
+mount -o loop /root/CentOS-7-x86_64-Minimal-1511.iso /mnt
 cd /mnt
 
 # create tftp boot menu
