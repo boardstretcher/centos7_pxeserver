@@ -57,10 +57,15 @@ cat << EOF > /var/www/html/answerfile_slave
 <source type="url">http://$serverip/xenserver/</source>
 <ntp-server>pool.ntp.org</ntp-server>
 <admin-interface name="eth0" proto="dhcp" />
+<script stage="installation-complete" type="url">
+http://$serverip/joinpool</script>
 <timezone>America/Detroit</timezone>
 </installation>
 EOF
 
+cat << EOF > /var/www/html/joinpool
+xe pool-join master-address=192.168.201.55 master-username=root master-password=r00tme
+EOF
 
 # copy installation packages to apache
 cd /mnt
