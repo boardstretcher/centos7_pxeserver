@@ -24,7 +24,7 @@ mkdir /var/lib/tftpboot/pxelinux.cfg
 cat << EOF >> /var/lib/tftpboot/pxelinux.cfg/default
 LABEL install xenserver
         kernel mboot.c32
-        append xenserver/xen.gz dom0_max_vcpus=2 dom0_mem=752M com1=115200,8n1 console=com1,vga --- xenserver/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=http://$serverip/answerfile install --- xenserver/install.img
+        append xenserver/xen.gz dom0_max_vcpus=2 dom0_mem=2048M,max:2048M com1=115200,8n1 console=com1,vga --- xenserver/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=http://$serverip/answerfile install --- xenserver/install.img
 EOF
 
 # create xenserver answerfile for config
