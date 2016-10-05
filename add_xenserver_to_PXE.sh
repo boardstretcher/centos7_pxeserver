@@ -22,24 +22,45 @@ cp ./install.img /var/lib/tftpboot/xenserver
 # create tftp boot menu
 mkdir /var/lib/tftpboot/pxelinux.cfg
 cat << EOF >> /var/lib/tftpboot/pxelinux.cfg/default
-LABEL install xenserver
+LABEL install xenserver_master
         kernel mboot.c32
-        append xenserver/xen.gz dom0_max_vcpus=2 dom0_mem=2048M,max:2048M com1=115200,8n1 console=com1,vga --- xenserver/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=http://$serverip/answerfile install --- xenserver/install.img
+        append xenserver/xen.gz dom0_max_vcpus=2 dom0_mem=2048M,max:2048M com1=115200,8n1 console=com1,vga --- xenserver/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=http://$serverip/answerfile_master install --- xenserver/install.img
+LABEL install xenserver_slave
+        kernel mboot.c32
+        append xenserver/xen.gz dom0_max_vcpus=2 dom0_mem=2048M,max:2048M com1=115200,8n1 console=com1,vga --- xenserver/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=http://$serverip/answerfile_slave install --- xenserver/install.img
 EOF
 
 # create xenserver answerfile for config
-cat << EOF > /var/www/html/answerfile
+cat << EOF > /var/www/html/answerfile_master
 <?xml version="1.0"?>
 <installation srtype="ext">
 <primary-disk>sda</primary-disk>
 <keymap>us</keymap>
-<root-password>#MODIFY</root-password>
-<source type="url">http://$serverip/xenserver/#MODIFY</source>
+<root-password>r00tme</root-password>
+<source type="url">http://$serverip/xenserver/</source>
+<ntp-server>pool.ntp.org</ntp-server>
+<admin-interface name="eth0" proto="static">
+<ipaddr>192.168.201.55</ipaddr>
+<subnet>255.255.255.0</subnet>
+<gateway>192.168.201.100</gateway>
+</admin-interface>
+<timezone>America/Detroit</timezone>
+</installation>
+EOF
+
+cat << EOF > /var/www/html/answerfile_slave
+<?xml version="1.0"?>
+<installation srtype="ext">
+<primary-disk>sda</primary-disk>
+<keymap>us</keymap>
+<root-password>r00tme</root-password>
+<source type="url">http://$serverip/xenserver/</source>
 <ntp-server>pool.ntp.org</ntp-server>
 <admin-interface name="eth0" proto="dhcp" />
 <timezone>America/Detroit</timezone>
 </installation>
 EOF
+
 
 # copy installation packages to apache
 cd /mnt
