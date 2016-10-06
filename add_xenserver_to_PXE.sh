@@ -65,18 +65,18 @@ cat << EOF > /var/www/html/answerfile_slave
 <source type="url">http://$serverip/xenserver/</source>
 <ntp-server>pool.ntp.org</ntp-server>
 <admin-interface name="eth0" proto="dhcp" />
-<script stage="installation-complete" type="url">
+<script stage="file-system-populated" type="url">
 http://$serverip/grab-postinstall.sh</script>
 <timezone>$timezone</timezone>
 </installation>
 EOF
 
-cat << EOF > /var/www/html/grab-postinstall.sha
+cat << EOF > /var/www/html/grab-postinstall.sh
 #!/bin/sh
-touch /tmp/post-executed
-wget http://$serverip/first-run.sh -O /tmp/first-run.sh
-chmod 755 /tmp/first-run.sh 
-ln -s /tmp/first-run.sh /etc/rc3.d/S99zzpostinstall
+touch $1/tmp/post-executed
+wget http://$serverip/first-run.sh -O $1/tmp/first-run.sh
+chmod 755 $1/tmp/first-run.sh 
+ln -s $1/tmp/first-run.sh $1/etc/rc3.d/S99zzpostinstall
 EOF
 
 cat << EOF > /var/www/html/first-run.sh
