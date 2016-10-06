@@ -73,10 +73,10 @@ EOF
 
 cat << EOF > /var/www/html/grab-postinstall.sh
 #!/bin/sh
-touch $1/tmp/post-executed
-wget http://$serverip/first-run.sh -O $1/tmp/first-run.sh
-chmod 755 $1/tmp/first-run.sh 
-ln -s $1/tmp/first-run.sh $1/etc/rc3.d/S99zzpostinstall
+touch \$1/tmp/post-executed
+wget http://$serverip/first-run.sh -O \$1/tmp/first-run.sh
+chmod 755 \$1/tmp/first-run.sh 
+ln -s \$1/tmp/first-run.sh \$1/etc/rc3.d/S99zzpostinstall
 EOF
 
 cat << EOF > /var/www/html/first-run.sh
