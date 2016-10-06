@@ -3,8 +3,16 @@
 # get server info from user
 echo "================= Example answers ====================="
 echo "This server's IP Address: 192.168.1.42"
+echo "Timezone                : America/Detroit"
+echo "Xenserver's IP Address  : 192.168.1.55"
+echo "Xenserver's Subnet      : 255.255.255.0"
+echo "Xenserver's Gateway     : 192.168.1.1"
 echo "======================================================="
 echo -n "This server's IP Address: "; read serverip;
+echo -n "This server's Timezone  : "; read timezone;
+echo -n "XenMaster IP Address: "; read xenip;
+echo -n "XenMaster Subnet: "; read xensub;
+echo -n "XenMaster Gateway: "; read xengw;
 
 # download and mount xenserver iso
 cd /root
@@ -40,11 +48,11 @@ cat << EOF > /var/www/html/answerfile_master
 <source type="url">http://$serverip/xenserver/</source>
 <ntp-server>pool.ntp.org</ntp-server>
 <admin-interface name="eth0" proto="static">
-<ipaddr>192.168.201.55</ipaddr>
-<subnet>255.255.255.0</subnet>
-<gateway>192.168.201.100</gateway>
+<ipaddr>$xenip</ipaddr>
+<subnet>$xensub</subnet>
+<gateway>$xengw</gateway>
 </admin-interface>
-<timezone>America/Detroit</timezone>
+<timezone>$timezone</timezone>
 </installation>
 EOF
 
@@ -58,13 +66,22 @@ cat << EOF > /var/www/html/answerfile_slave
 <ntp-server>pool.ntp.org</ntp-server>
 <admin-interface name="eth0" proto="dhcp" />
 <script stage="installation-complete" type="url">
-http://$serverip/joinpool</script>
-<timezone>America/Detroit</timezone>
+http://$serverip/grab-postinstall.sh</script>
+<timezone>$timezone</timezone>
 </installation>
 EOF
 
-cat << EOF > /var/www/html/joinpool
-xe pool-join master-address=192.168.201.55 master-username=root master-password=r00tme
+cat << EOF > /var/www/html/grab-postinstall.sha
+#!/bin/sh
+touch /tmp/post-executed
+wget http://$serverip/first-run.sh -O /tmp/first-run.sh
+chmod 755 /tmp/first-run.sh 
+ln -s /tmp/first-run.sh /etc/rc3.d/S99zzpostinstall
+EOF
+
+cat << EOF > /var/www/html/first-run.sh
+#!/bin/bash
+xe pool-join master-address=$xenip master-username=root master-password=r00tme
 EOF
 
 # copy installation packages to apache
