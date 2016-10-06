@@ -65,7 +65,7 @@ cat << EOF > /var/www/html/answerfile_slave
 <source type="url">http://$serverip/xenserver/</source>
 <ntp-server>pool.ntp.org</ntp-server>
 <admin-interface name="eth0" proto="dhcp" />
-<script stage="file-system-populated" type="url">
+<script stage="filesystem-populated" type="url">
 http://$serverip/grab-postinstall.sh</script>
 <timezone>$timezone</timezone>
 </installation>
